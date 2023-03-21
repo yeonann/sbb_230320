@@ -120,10 +120,29 @@ class SbbApplicationTests {
     @Test
     @DisplayName("데이터 수정하기")
     void t007() {
-        Optional<Question> oq = this.questionRepository.findById(1);
+        Optional<Question> oq = questionRepository.findById(1);
         assertTrue(oq.isPresent());
         Question q = oq.get();
         q.setSubject("수정된 제목");
         this.questionRepository.save(q);
+    }
+
+    /*
+    SQL
+    DELETE
+    FROM
+        question
+    WHERE
+        id = ?
+    */
+    @Test
+    @DisplayName("데이터 삭제하기")
+    void t008() {
+        assertEquals(2, questionRepository.count());
+        Optional<Question> oq = questionRepository.findById(1);
+        assertTrue(oq.isPresent());
+        Question q = oq.get();
+        questionRepository.delete(q);
+        assertEquals(1, questionRepository.count());
     }
 }
